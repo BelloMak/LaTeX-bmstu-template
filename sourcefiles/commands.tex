@@ -1,0 +1,38 @@
+% команда для вставки рисунка
+\newcommand{\img}[5][htb]{
+  	\begin{figure}[#1]
+    		\centering
+    		\includegraphics[width = #5\linewidth]{./img/#3}
+   	 	\caption{#4}
+	 	\label{#2}
+  	\end{figure}
+}
+
+% изменение способа задания греческой фи
+\renewcommand{\phi}{\varphi}
+
+% включение сквозной нумерации рисунков
+\counterwithout{figure}{chapter}
+
+% изменение команды из шаблона bmstu для корректной вставки номера страницы
+% списка литературы
+\renewcommand{\makebibliography}
+{	
+\printbibliography[heading=bibintoc,title={СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}]
+}
+
+% Команда для добавления сокращения
+\newcommand{\abbr}[2]{
+	\DeclareAcronym{#1}{
+    	short={#1},
+    	long={--- #2},
+    }
+}
+
+% Команда для вставки списка сокращений
+\newcommand{\printabbr}{
+	\printacronyms[display=all,name={ОБОЗНАЧЕНИЯ И СОКРАЩЕНИЯ},preamble={В
+	настоящей расчетно-пояснительной записке применяют следующие сокращения и
+	обозначения.}] 
+	\addcontentsline{toc}{chapter}{ОБОЗНАЧЕНИЯ И СОКРАЩЕНИЯ}
+}

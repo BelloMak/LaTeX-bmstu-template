@@ -1,0 +1,24 @@
+\providecommand\classopts{}                                                     % Для возможности задания class option из Makefile
+\expandafter\documentclass\expandafter[\classopts]{bmstu}                       % https://github.com/Orianti/bmstu-latex-class/tree/master
+
+\usepackage{url}                                                                % Кликабельные интернет-ссылки
+\usepackage{pdfpages}                                                           % Вставка страниц из PDF
+\usepackage{acro}                                                               % Пакет для сортировки сокращений https://www.ctan.org/pkg/acro
+\bibliography{BibDB}                                                            % Библиографический список
+
+\input{./sourcefiles/commands.tex}                                              % Пользовательские команды
+\input{./sourcefiles/abbreviations.tex}                                         % Сокращения
+
+\begin{document}                                                                % Начало документа
+
+\includepdf[pages=1]{titlepage.pdf}                                             % Добавляем титульный лист
+\maketableofcontents{}                                                          % Содержание
+\printabbr{}                                                                    % Список сокращений
+
+\include{./sourcefiles/01-introduction}                                         % Введение
+\include{./sourcefiles/02-research}                                             % Основная часть
+\include{./sourcefiles/03-ending}                                               % Заключение
+
+\makebibliography{}                                                             % Список литературы
+
+\end{document}                                                                  % Конец документа
