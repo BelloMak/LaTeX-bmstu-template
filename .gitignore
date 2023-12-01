@@ -17,3 +17,5 @@
 .tmp.drivedownload/*
 /literature
 .vscode
+!make_draft.pdf
+!make_final.pdf

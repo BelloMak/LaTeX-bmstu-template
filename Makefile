@@ -1,42 +1,26 @@
-# Для работы данного файла необходимо установить make, grep и nhcolor
-# (отвечает за цветной вывод ошибок, можно убрать; URL:
-# https://nhutils.ru/blog/цвет-текста-в-командном-файле/) и прописать их в PATH.
-# Также необходимо установить пакет texlogsieve в MikTex (отвечает за вывод
-# warning; URL: https://www.ctan.org/tex-archive/support/texlogsieve?lang=en).
+SHELL = cmd																		# Среда исполнения
 
-# Для работы draft мода необходимо в main файле вместо 
-# \documentclass{bmstu}
-# написать: 
-# \providecommand\classopts{}
-# \expandafter\documentclass\expandafter[\classopts]{bmstu}
+TEX_SOURCE := main																# Название главного tex файла
+TITLE_SOURCE := titlepage														# Название tex файла титульника
 
-# Также для корректного отображения warning необходимо вынести титульный лист за
-# пределы main файла в titlepage.tex и добавлять его в РПЗ с помощью 
-# \includepdf{titlepage.pdf}
-
-SHELL = cmd
-
-TEX_SOURCE := main
-TITLE_SOURCE := titlepage
-
-FINALPARAM = -interaction=nonstopmode -file-line-error -halt-on-error
-
-DRAFTPARAM = -interaction=errorstopmode -file-line-error -halt-on-error
+FINALPARAM = -interaction=nonstopmode -file-line-error -halt-on-error			# Параметры запуска make final
+DRAFTPARAM = -interaction=errorstopmode -file-line-error -halt-on-error			# Параметры запуска make draft
 
 TEXLOGSIEVEPARAM = --only-summary --color --summary-detail --repetitions \
-	--no-heartbeat --no-box-detail
+	--no-heartbeat --no-box-detail												# Параметры запуска пакета toxlogsieve
 
-GREPPARAM = -m 1 -A 1 -E "*[.]tex:[0-9]+:|!pdfTeX error"
+GREPPARAM = -m 1 -A 1 -E "*[.]tex:[0-9]+:|!pdfTeX error"						# Параметры поиска ошибок
 
-TEMP_FILES = *.aux *.bbl *.bcf *.blg *.log *.out *.run.xml *.toc
+TEMP_FILES = *.aux *.bbl *.bcf *.blg *.log *.out *.run.xml *.toc				# Расширения временных файлов
 
-TRASH := nul
+TRASH := nul																	
 
 .PHONY: -s title
 .SILENT: -s title
 title:
 	pdflatex $(FINALPARAM) $(TITLE_SOURCE).tex | grep $(GREPPARAM) | nhcolor 0c
-	grep $(GREPPARAM) $(TITLE_SOURCE).log > $(TRASH) || echo Title done! | nhcolor 02
+	grep $(GREPPARAM) $(TITLE_SOURCE).log > $(TRASH) || echo Title done! \
+	| nhcolor 02
 	make -s clean > $(TRASH)
 
 .PHONY: -s final
@@ -67,8 +51,10 @@ build:
 .SILENT: draft
 draft:
 	pdflatex $(DRAFTPARAM) "\def\classopts{draft}\input{$(TEX_SOURCE).tex}" \
-	|(texlogsieve $(TEXLOGSIEVEPARAM) & grep $(GREPPARAM) $(TEX_SOURCE).log | nhcolor 0c)
-	grep $(GREPPARAM) $(TEX_SOURCE).log > $(TRASH) || echo Draft done! | nhcolor 02
+	|(texlogsieve $(TEXLOGSIEVEPARAM) & grep $(GREPPARAM) $(TEX_SOURCE).log \
+	| nhcolor 0c)
+	grep $(GREPPARAM) $(TEX_SOURCE).log > $(TRASH) || echo Draft done! \
+	| nhcolor 02
 
 .PHONY: clean
 .SILENT: clean
