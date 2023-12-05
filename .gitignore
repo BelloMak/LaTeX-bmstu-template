@@ -12,6 +12,7 @@
 *.bcf
 *.run.xml
 *.toc
+*.mylog
 .pdf-view-restore
 .tmp.driveupload/*
 .tmp.drivedownload/*
